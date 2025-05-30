@@ -134,7 +134,7 @@ root/
 ---
 
 ## 📸 Capturas de Pantalla
-![Home](./img/001.jpg)
+![Home](./img/001.png)
 
 ---
 
