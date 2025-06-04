@@ -10,7 +10,6 @@ export const register = async (req, res) => {
     numIdentificacion,
     correo,
     grado,
-    password,
     rol
   } = req.body;
 
@@ -22,7 +21,6 @@ export const register = async (req, res) => {
     !numIdentificacion ||
     !correo ||
     !grado ||
-    !password ||
     !rol
   ) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
@@ -37,7 +35,7 @@ export const register = async (req, res) => {
     }
 
     // Hashear la contraseña
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(numIdentificacion, 10);
 
     // Crear nuevo usuario
     const newUser = new User({
@@ -57,6 +55,7 @@ export const register = async (req, res) => {
     const html = `
       <h2>¡Bienvenido a Observador Estudiantil, ${nombre} ${apellido}!</h2>
       <p>Tu cuenta ha sido creada exitosamente con el correo <strong>${correo}</strong>.</p>
+      <p>Recuerda que tu contraseña es el numero de documento de identidad para ingresar a la plataforma.</p>
       <p>Gracias por confiar en nosotros.</p>
     `;
 

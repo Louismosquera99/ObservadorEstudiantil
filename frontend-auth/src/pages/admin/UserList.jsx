@@ -12,6 +12,7 @@ const UserList = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [mode, setMode] = useState("edit"); // "edit" | "create"
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -27,14 +28,18 @@ const UserList = () => {
     }
   };
 
+  useEffect(() => {
+    fetchUsuarios();
+  }, []);
+
   const eliminarUsuario = async (id) => {
     const result = await Swal.fire({
       title: "¿Estás seguro?",
       text: "Esta acción eliminará al usuario permanentemente.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33", // rojo para acciones destructivas
-      cancelButtonColor: "#6b7280", // gris neutro
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     });
@@ -51,6 +56,21 @@ const UserList = () => {
 
   const openEditModal = (user) => {
     setSelectedUser(user);
+    setMode("edit");
+    setShowModal(true);
+  };
+
+  const openCreateModal = () => {
+    setSelectedUser({
+      nombre: "",
+      apellido: "",
+      tipoIdentificacion: "",
+      numIdentificacion: "",
+      correo: "",
+      grado: "",
+      rol: "alumno",
+    });
+    setMode("create");
     setShowModal(true);
   };
 
@@ -58,6 +78,7 @@ const UserList = () => {
     try {
       const { data } = await axios.put(
         `http://localhost:5000/api/users/${selectedUser._id}`,
+        // En edición, enviamos TODO el objeto completo
         selectedUser
       );
       setUsuarios((u) =>
@@ -70,9 +91,30 @@ const UserList = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUsuarios();
-  }, []);
+  const handleCreateUser = async () => {
+    try {
+      // Al crear, enviamos solo los campos que el backend requiere.
+      const payload = {
+        nombre: selectedUser.nombre,
+        apellido: selectedUser.apellido,
+        tipoIdentificacion: selectedUser.tipoIdentificacion,
+        numIdentificacion: selectedUser.numIdentificacion,
+        correo: selectedUser.correo,
+        grado: selectedUser.grado,
+        rol: selectedUser.rol,
+      };
+      const { data } = await axios.post(
+        "http://localhost:5000/api/register",
+        payload
+      );
+      // data.user viene sin password (tal como lo devolvía el backend)
+      setUsuarios((u) => [data.user, ...u]);
+      setShowModal(false);
+      toast.success("Usuario creado correctamente");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error al crear usuario");
+    }
+  };
 
   const filtered = usuarios.filter(
     (u) =>
@@ -96,11 +138,19 @@ const UserList = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       {/* Cabecera */}
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6 mb-6 flex items-center">
-        <img src={observador} alt="Observador Logo" className="h-10 mr-4" />
-        <h1 className="text-2xl font-bold text-gray-800">
-          Gestión de Usuarios
-        </h1>
+      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6 mb-6 flex items-center justify-between">
+        <div className="flex items-center">
+          <img src={observador} alt="Observador Logo" className="h-10 mr-4" />
+          <h1 className="text-2xl font-bold text-gray-800">
+            Gestión de Usuarios
+          </h1>
+        </div>
+        <button
+          onClick={openCreateModal}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          + Crear usuario
+        </button>
       </div>
 
       {/* Tabla y buscador */}
@@ -118,13 +168,15 @@ const UserList = () => {
         onPageChange={setCurrentPage}
       />
 
-      {/* Modal de edición */}
-      {showModal && selectedUser && (
+      {/* Modal de creación/edición */}
+      {showModal && (
         <AdminEditUserModal
+          mode={mode}
           selectedUser={selectedUser}
           onClose={() => setShowModal(false)}
           onChange={setSelectedUser}
           onSave={handleSaveChanges}
+          onCreate={handleCreateUser}
         />
       )}
     </div>

@@ -1,6 +1,7 @@
+// src/components/Sidebar.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaTimes, FaUser, FaBox, FaDashcube } from "react-icons/fa";
+import { FaTimes, FaUser, FaBox, FaDashcube, FaChalkboardTeacher, FaClipboardList  } from "react-icons/fa";
 import observador from "../assets/logoobservadornegro.png";
 
 const Sidebar = ({ user: propUser, onLogout, menuOpen, setMenuOpen }) => {
@@ -15,21 +16,35 @@ const Sidebar = ({ user: propUser, onLogout, menuOpen, setMenuOpen }) => {
     }
   }, [propUser]);
 
-  const isAdmin = user?.rol === "admin";
-
+  // Arrays de items para cada rol
   const adminItems = [
     { name: "Dashboard", icon: <FaDashcube />, path: "/dashboard" },
     { name: "Usuarios", icon: <FaUser />, path: "/admin/usuarios" },
-    { name: "Productos", icon: <FaBox />, path: "/admin/productos" },
-    { name: "Préstamos", icon: <FaBox />, path: "/admin/prestamos" },
+    { name: "Observaciones", icon: <FaClipboardList  />, path: "/admin/observaciones" },
+    { name: "Seguimientos", icon: <FaBox />, path: "/admin/seguimientos" },
   ];
 
-  const userItems = [
+  const docenteItems = [
     { name: "Dashboard", icon: <FaDashcube />, path: "/dashboard" },
-    { name: "Préstamos", icon: <FaBox />, path: "/prestamos" },
+    { name: "Observaciones", icon: <FaChalkboardTeacher />, path: "/observaciones" },
+    { name: "Resumen", icon: <FaBox />, path: "/resumen" },
   ];
 
-  const menuItems = isAdmin ? adminItems : userItems;
+  const alumnoItems = [
+    { name: "Dashboard", icon: <FaDashcube />, path: "/dashboard" },
+    { name: "Resumen", icon: <FaBox />, path: "/seguimientos-alumno" },
+    { name: "Reportes", icon: <FaBox />, path: "/reportes-alumno" },
+  ];
+
+  // Determinar qué menú usar según el rol
+  let menuItems = [];
+  if (user?.rol === "admin") {
+    menuItems = adminItems;
+  } else if (user?.rol === "docente") {
+    menuItems = docenteItems;
+  } else if (user?.rol === "alumno") {
+    menuItems = alumnoItems;
+  }
 
   return (
     <>
@@ -48,22 +63,34 @@ const Sidebar = ({ user: propUser, onLogout, menuOpen, setMenuOpen }) => {
         {/* Logo y título */}
         <div className="p-4 flex items-center justify-between bg-[#D3D3D3]">
           <div className="flex items-center">
-            <img src={observador} alt="Observador Estudiantil Logo" className="h-8 mr-2" />
+            <img
+              src={observador}
+              alt="Observador Estudiantil Logo"
+              className="h-8 mr-2"
+            />
             <span className="text-gray-800 font-bold">Observador</span>
           </div>
-          <button className="md:hidden text-gray-800" onClick={() => setMenuOpen(false)}>
+          <button
+            className="md:hidden text-gray-800"
+            onClick={() => setMenuOpen(false)}
+          >
             <FaTimes />
           </button>
         </div>
 
-        {/* Contenido */}
+        {/* Información de usuario */}
         <div className="p-4 text-left overflow-y-auto flex-1">
           <div className="mb-6">
             <p className="font-medium text-gray-700">Bienvenido,</p>
-            <p className="font-semibold text-gray-800">{user?.nombre || "Usuario"}</p>
-            <p className="text-sm italic text-gray-600 capitalize">{user?.rol || "usuario"}</p>
+            <p className="font-semibold text-gray-800">
+              {user?.nombre || "Usuario"}
+            </p>
+            <p className="text-sm italic text-gray-600 capitalize">
+              {user?.rol || "rol"}
+            </p>
           </div>
 
+          {/* Navegación según rol */}
           <nav className="flex flex-col gap-2">
             <Link
               to="/"
@@ -72,6 +99,7 @@ const Sidebar = ({ user: propUser, onLogout, menuOpen, setMenuOpen }) => {
             >
               <FaDashcube /> Inicio
             </Link>
+
             {menuItems.map((item) => (
               <Link
                 key={item.name}

@@ -1,5 +1,4 @@
 // src/App.jsx
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,13 +11,13 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
-// Páginas de usuario/
+// Páginas de usuario
 import Dashboard from "./pages/Dashboard";
-import Prestamos from "./pages/admin/Prestamos"; // o muévelo a pages/user
+import Observaciones from "./pages/admin/AdminObservations"; // si luego quieres separar, muévela a pages/alumno/MyObservaciones
 
 // Páginas de administrador
 import Usuarios from "./pages/admin/UserList";
-import Productos from "./pages/admin/Productos";
+import Seguimientos from "./pages/admin/AdminSeguimientos";
 import AdminWelcome from "./components/Welcome";
 
 // Layouts y rutas protegidas
@@ -26,6 +25,7 @@ import UserLayout from "./components/UserLayout";
 import AdminLayout from "./components/AdminLayout";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
+import AlumnoResumen from "./pages/alumno/AlumnoResumen";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -45,7 +45,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-        {/* Layout para usuario/pasante */}
+        {/* Layout para usuario (docente o alumno) */}
         <Route
           path="/"
           element={
@@ -55,26 +55,28 @@ const App = () => {
           }
         >
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="prestamos" element={<Prestamos />} />
+          {/* Ruta para que docentes/alumnos vean sus observaciones */}
+          <Route path="observaciones" element={<Observaciones />} />
+          <Route path="seguimientos-alumno" element={<AlumnoResumen />} />
         </Route>
 
         {/* Layout para admin */}
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
             <AdminRoute>
               <AdminLayout user={user} onLogout={onLogout} />
             </AdminRoute>
           }
         >
-          {/* index equivale a /admin */}
           <Route index element={<AdminWelcome user={user} />} />
           <Route path="usuarios" element={<Usuarios />} />
-          <Route path="productos" element={<Productos />} />
-          <Route path="prestamos" element={<Prestamos />} />
+          <Route path="seguimientos" element={<Seguimientos />} />
+          {/* Ruta para que el admin vea todas las observaciones */}
+          <Route path="observaciones" element={<Observaciones />} />
         </Route>
 
-        {/* 404 */}
+        {/* 404 genérico */}
         <Route path="*" element={<NotFound />} />
       </Routes>
 
