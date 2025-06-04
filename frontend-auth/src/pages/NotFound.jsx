@@ -8,7 +8,7 @@ const NotFound = () => {
       <div className="flex items-center mb-8">
         <img src={observador} alt="SENA Logo" className="h-10 mr-3" />
         <h1 className="text-xl md:text-2xl font-bold text-gray-800">
-          SIGS - Inventario Granja SENA
+         Ups! Observador Estudiantil
         </h1>
       </div>
 
