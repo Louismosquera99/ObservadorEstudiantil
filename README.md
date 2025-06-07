@@ -8,14 +8,13 @@
 
 **Supervisado por Instructor:** Héctor David Toledo García
 
-SIGS es una plantilla Full Stack MERN (React + Vite, Node.js + Express, MongoDB) diseñada para la gestión de inventario y préstamos digitales en la granja del SENA. Incluye:
+Observador estudiantil es una plataforma educativa para registrar, consultar y analizar observaciones académicas y comportamentales de estudiantes. Incluye:
 
 - **Autenticación JWT** (login/registro) con recuperación de contraseña por correo.
-- **Roles**: Administrador y Pasante/Aprendiz con layouts y rutas protegidas.
+- **Roles**: Administrador, docente y estudiante/acudiente.
 - **CRUD Usuarios** en panel administrativo.
-- **CRUD Productos** con carga y vista previa de imágenes.
-- **Gestión de Préstamos**: registro, devolución y seguimiento.
-- **Interfaz responsiva** con TailwindCSS y paleta institucional SENA.
+- **CRUD observaciones** con carga y vista previa.
+- **Interfaz responsiva** con TailwindCSS y paleta institucional .
 
 ---
 
@@ -45,7 +44,7 @@ root/
 
 1. **Clonar repositorio**
    ```bash
-   git clone git@github.com:VANESSATCV/S.I.G.S.git
+   https://github.com/Louismosquera99/ObservadorEstudiantil.git
    cd s.i.g.s
    ```
 
@@ -90,9 +89,9 @@ root/
 
 ## 🚀 Características
 
-- **Autenticación y roles**: Admin/Aprendiz con rutas protegidas.
-- **CRUD Usuarios y Productos**: con modales, validación y notificaciones.
-- **Préstamos**: gestión completa desde dashboard.
+- **Autenticación y roles**: Admin/Docente/estudiante con rutas protegidas.
+- **CRUD Usuarios**: con modales, validación y notificaciones.
+- **Observaciones**: gestión completa desde dashboard.
 - **Recuperación de contraseña**: envío de link, formulario de reseteo.
 - **UI/UX**: responsive, paleta institucional verde/blanco.
 - **Feedback**: alertas con React Toastify y diálogos con SweetAlert2.
@@ -116,20 +115,13 @@ root/
 | PUT    | `/api/users/:id`       | Actualizar usuario     |
 | DELETE | `/api/users/:id`       | Eliminar usuario       |
 
-### Productos (Admin)
+### Observaciones (Admin)
 | Método | Ruta                       | Descripción           |
 |--------|----------------------------|-----------------------|
-| GET    | `/api/productos`           | Listar productos      |
-| POST   | `/api/productos`           | Crear producto        |
-| PUT    | `/api/productos/:id`       | Editar producto       |
-| DELETE | `/api/productos/:id`       | Eliminar producto     |
-
-### Préstamos
-| Método | Ruta                          | Descripción                     |
-|--------|-------------------------------|---------------------------------|
-| GET    | `/api/prestamos`              | Listar préstamos (Admin)        |
-| POST   | `/api/prestamos`              | Crear préstamo                  |
-| PUT    | `/api/prestamos/:id/devolver` | Marcar devolución               |
+| GET    | `/api/observaciones`           | Listar observaciones     |
+| POST   | `/api/observaciones`           | Crear observaciones      |
+| PUT    | `/api/observaciones/:id`       | Editar observaciones       |
+| DELETE | `/api/observacioness/:id`       | Eliminar observaciones     |
 
 ---
 
