@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import observador from "../assets/logoObservadorNegro.png";
 import { Link } from "react-router-dom";
-import { FaUserTie, FaFemale } from "react-icons/fa";
+import foto1Img from "../assets/foto1.jpg";
+import foto2Img from "../assets/foto2.jpg";
+import foto3Img from "../assets/foto3.jpg";
+import foto4Img from "../assets/foto4.jpg";
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -91,15 +94,20 @@ const Home = () => {
           <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">Desarrolladores</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { name: "Jorge Hios", icon: <FaUserTie size={48} /> },
-              { name: "Louis Mosquera", icon: <FaUserTie size={48} /> },
-              { name: "Diana Mora", icon: <FaFemale size={48} /> },
-              { name: "Karent Vargas", icon: <FaFemale size={48} /> },
+              { name: "Jorge Hios", image: foto3Img},
+               { name: "Louis Mosquera", image: foto1Img }, 
+              { name: "Diana Mora", image: foto4Img },
+              { name: "Karent Vargas", image: foto2Img },
             ].map((dev, idx) => (
               <div key={idx} className="text-center bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg">
-                <div className="w-20 h-20 mx-auto flex items-center justify-center rounded-full bg-blue-600 text-white mb-4">
-                  {dev.icon}
+                <div className="w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 border-4 border-white shadow-inner bg-blue-600 flex items-center justify-center">
+                  {dev.image ? (
+                    <img src={dev.image} alt={dev.name} className="w-full h-full object-cover rounded-full" />
+                  ) : (
+                    dev.icon
+                  )}
                 </div>
+
                 <h4 className="text-lg font-semibold text-gray-800">{dev.name}</h4>
                 <p className="text-gray-600">Aprendiz ADSO</p>
               </div>
@@ -110,7 +118,7 @@ const Home = () => {
 
       {/* Footer */}
       <footer className="w-full text-center text-gray-500 py-6 px-4 border-t">
-        <p className="text-sm">© {new Date().getFullYear()} Observador Estudiantil - SENA.</p>
+        <p className="text-sm">© {new Date().getFullYear()} Observador Estudiantil</p>
       </footer>
     </div>
   );

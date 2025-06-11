@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
-import senaLogo from "../assets/logogreen.png";
+import observador from "../assets/logoobservadornegro.png";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ const Register = () => {
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
         {/* Logo SENA */}
         <div className="flex justify-center mb-6">
-          <img src={senaLogo} alt="SENA Logo" className="h-12" />
+          <img src={observador} alt="SENA Logo" className="h-12" />
         </div>
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Crear Cuenta</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -97,19 +97,19 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+            className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition" 
           >
             Registrarse
           </button>
         </form>
         <div className="mt-6 text-center text-gray-600 space-y-2">
           <p>
-            <Link to="/login" className="text-green-600 hover:underline font-medium">
+            <Link to="/login" className="text-blue-600 hover:underline font-medium">
               ¿Ya tienes cuenta? Inicia sesión
             </Link>
           </p>
           <p>
-            <Link to="/" className="text-green-600 hover:underline font-medium">
+            <Link to="/" className="text-blue-600 hover:underline font-medium">
               Volver al inicio
             </Link>
           </p>

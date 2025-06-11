@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import senaLogo from "../assets/logogreen.png";
+import observador from "../assets/logoobservadornegro.png";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -41,7 +41,7 @@ const ResetPassword = () => {
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
         {/* Logo SENA */}
         <div className="flex justify-center mb-6">
-          <img src={senaLogo} alt="SENA Logo" className="h-12" />
+          <img src={observador} alt="SENA Logo" className="h-12" />
         </div>
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Restablecer Contraseña
@@ -55,7 +55,7 @@ const ResetPassword = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-600 pr-10"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-600 pr-10"
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
@@ -73,7 +73,7 @@ const ResetPassword = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-600 pr-10"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-600 pr-10"
             />
             <span
               onClick={() => setShowConfirm(!showConfirm)}
@@ -85,19 +85,20 @@ const ResetPassword = () => {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+            className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+
           >
             Guardar nueva contraseña
           </button>
         </form>
         <div className="mt-6 text-center text-gray-600 space-y-2">
           <p>
-            <a href="/login" className="text-green-600 hover:underline font-medium">
+            <a href="/login" className="text-blue-600 hover:underline font-medium">
               Iniciar Sesión
             </a>
           </p>
           <p>
-            <a href="/" className="text-green-600 hover:underline font-medium">
+            <a href="/" className="text-blue-600 hover:underline font-medium">
               Volver al inicio
             </a>
           </p>
