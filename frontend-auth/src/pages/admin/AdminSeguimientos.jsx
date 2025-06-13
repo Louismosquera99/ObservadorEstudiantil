@@ -1,14 +1,13 @@
 // src/pages/admin/AdminSeguimientos.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AdminSeguimientoTable from "../../components/AdminSeguimientoTable";
+import AdminObservationFollowUpTable from "../../components/AdminSeguimientoTable";
 import FollowUpModal from "../../components/FollowUpModal";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
 import observador from "../../assets/logoobservadornegro.png";
 
 const AdminSeguimientos = () => {
-  const [seguimientos, setSeguimientos] = useState([]);
+  const [observaciones, setObservaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showFollowUp, setShowFollowUp] = useState(false);
   const [selectedObsId, setSelectedObsId] = useState(null);
@@ -16,38 +15,49 @@ const AdminSeguimientos = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const fetchSeguimientos = async () => {
+  // 1. Traer todas las observaciones
+  const fetchObservaciones = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/seguimientos");
-      setSeguimientos(data);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/observaciones`);
+      setObservaciones(data);
     } catch {
-      toast.error("Error al obtener seguimientos");
+      toast.error("Error al obtener observaciones");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSeguimientos();
+    fetchObservaciones();
   }, []);
 
+  // 2. Abrir modal de seguimiento
   const openFollowUpModal = (obsId) => {
     setSelectedObsId(obsId);
     setShowFollowUp(true);
   };
 
+  // 3. Después de guardar seguimiento, recargar lista
   const handleFollowUpUpdated = async () => {
-    // Después de añadir seguimiento, recargar todos
-    await fetchSeguimientos();
+    setShowFollowUp(false);
+    await fetchObservaciones();
   };
 
-  const filtered = seguimientos.filter(
-    (s) =>
-      s.estudiante.toLowerCase().includes(search.toLowerCase()) ||
-      s.tipo.toLowerCase().includes(search.toLowerCase()) ||
-      s.comentario.toLowerCase().includes(search.toLowerCase()) ||
-      s.quien.toLowerCase().includes(search.toLowerCase())
-  );
+  // 4. Filtrado
+  const filtered = observaciones.filter((obs) => {
+    const term = search.toLowerCase();
+    return (
+      obs.estudiante.nombre.toLowerCase().includes(term) ||
+      obs.estudiante.apellido.toLowerCase().includes(term) ||
+      obs.tipo.toLowerCase().includes(term) ||
+      obs.descripcion.toLowerCase().includes(term) ||
+      obs.estado.toLowerCase().includes(term) ||
+      obs.creadoPor.nombre.toLowerCase().includes(term) ||
+      obs.creadoPor.apellido.toLowerCase().includes(term)
+    );
+  });
+
+  // 5. Paginación
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const paginated = filtered.slice(
     (currentPage - 1) * itemsPerPage,
@@ -57,7 +67,7 @@ const AdminSeguimientos = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-gray-500">Cargando seguimientos...</p>
+        <p className="text-gray-500">Cargando observaciones…</p>
       </div>
     );
   }
@@ -72,9 +82,9 @@ const AdminSeguimientos = () => {
         </h1>
       </div>
 
-      {/* Tabla y buscador */}
-      <AdminSeguimientoTable
-        seguimientos={paginated}
+      {/* Tabla de Observaciones con botón de seguimiento */}
+      <AdminObservationFollowUpTable
+        observations={paginated}
         onAddFollowUp={openFollowUpModal}
         searchTerm={search}
         onSearchChange={(val) => {

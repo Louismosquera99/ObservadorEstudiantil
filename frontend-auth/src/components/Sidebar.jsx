@@ -27,13 +27,12 @@ const Sidebar = ({ user: propUser, onLogout, menuOpen, setMenuOpen }) => {
   const docenteItems = [
     { name: "Dashboard", icon: <FaDashcube />, path: "/dashboard" },
     { name: "Observaciones", icon: <FaChalkboardTeacher />, path: "/observaciones" },
-    { name: "Resumen", icon: <FaBox />, path: "/resumen" },
+    { name: "Seguimientos", icon: <FaBox />, path: "/seguimientos" },
   ];
 
   const alumnoItems = [
     { name: "Dashboard", icon: <FaDashcube />, path: "/dashboard" },
-    { name: "Resumen", icon: <FaBox />, path: "/seguimientos-alumno" },
-    { name: "Reportes", icon: <FaBox />, path: "/reportes-alumno" },
+    { name: "Mis Observaciones", icon: <FaBox />, path: "/seguimientos-alumno" },
   ];
 
   // Determinar qué menú usar según el rol

@@ -58,6 +58,8 @@ const App = () => {
           {/* Ruta para que docentes/alumnos vean sus observaciones */}
           <Route path="observaciones" element={<Observaciones />} />
           <Route path="seguimientos-alumno" element={<AlumnoResumen />} />
+          <Route path="seguimientos" element={<Seguimientos />} />
+
         </Route>
 
         {/* Layout para admin */}

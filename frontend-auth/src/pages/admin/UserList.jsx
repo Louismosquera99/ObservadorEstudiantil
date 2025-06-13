@@ -19,7 +19,7 @@ const UserList = () => {
 
   const fetchUsuarios = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/users");
+      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users`);
       setUsuarios(data);
     } catch {
       toast.error("Error al obtener usuarios");
@@ -45,7 +45,7 @@ const UserList = () => {
     });
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:5000/api/users/${id}`);
+        await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/users/${id}`);
         setUsuarios((u) => u.filter((x) => x._id !== id));
         toast.success("Usuario eliminado correctamente");
       } catch {
@@ -77,7 +77,7 @@ const UserList = () => {
   const handleSaveChanges = async () => {
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/users/${selectedUser._id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/${selectedUser._id}`,
         // En edición, enviamos TODO el objeto completo
         selectedUser
       );
@@ -104,7 +104,7 @@ const UserList = () => {
         rol: selectedUser.rol,
       };
       const { data } = await axios.post(
-        "http://localhost:5000/api/register",
+        `${import.meta.env.VITE_API_BASE_URL}/api/register`,
         payload
       );
       // data.user viene sin password (tal como lo devolvía el backend)

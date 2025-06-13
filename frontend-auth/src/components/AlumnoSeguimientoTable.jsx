@@ -1,4 +1,3 @@
-// src/components/AlumnoSeguimientoTable.jsx
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 
@@ -12,7 +11,12 @@ const AlumnoSeguimientoTable = ({
   onPageChange,
 }) => {
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-5xl mx-auto">
+    <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-5xl mx-auto mt-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        Tus Observaciones
+      </h2>
+
+      {/* Buscador */}
       <div className="relative max-w-sm mx-auto mb-6">
         <FaSearch className="absolute left-3 top-3 text-gray-400" />
         <input
@@ -24,6 +28,7 @@ const AlumnoSeguimientoTable = ({
         />
       </div>
 
+      {/* Tabla */}
       <div className="overflow-x-auto">
         <table className="min-w-[700px] w-full text-sm text-left border-separate border-spacing-y-2">
           <thead>
@@ -47,12 +52,12 @@ const AlumnoSeguimientoTable = ({
                 <td className="px-4 py-3">
                   {new Date(o.createdAt).toLocaleDateString()}
                 </td>
-                <td className="px-4 py-3 text-center space-x-2">
+                <td className="px-4 py-3 text-center">
                   <button
                     onClick={() => onRespond(o)}
                     className="px-4 py-1 text-sm font-medium text-white bg-green-500 rounded hover:bg-green-600 transition"
                   >
-                    {o.respuestasEstudiante && o.respuestasEstudiante.length > 0
+                    {o.respuestasEstudiante?.length > 0
                       ? "Ver/Editar"
                       : "Responder"}
                   </button>
@@ -63,6 +68,7 @@ const AlumnoSeguimientoTable = ({
         </table>
       </div>
 
+      {/* Paginación */}
       {totalPages > 1 && (
         <div className="mt-6 flex justify-center gap-2">
           {Array.from({ length: totalPages }, (_, i) => (

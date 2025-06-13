@@ -29,7 +29,7 @@ const AdminObservationModal = ({
       const fetchEstudiantes = async () => {
         try {
           const { data } = await axios.get(
-            "http://localhost:5000/api/users?rol=alumno"
+            `${import.meta.env.VITE_API_BASE_URL}/api/users?rol=alumno`
           );
           setEstudiantes(data);
         } catch {

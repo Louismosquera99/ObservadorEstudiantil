@@ -3,7 +3,12 @@ import User from "../models/User.js";
 // ✅ Obtener todos los usuarios
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "-password"); // omitimos el password por seguridad
+    const { rol } = req.query;
+    // Si viene ?rol=alumno, añadimos el filtro; si no, devolvemos todos
+    const filter = {};
+    if (rol) filter.rol = rol;
+
+    const users = await User.find(filter, "-password"); // omitimos password
     res.json(users);
   } catch (error) {
     console.error("Error al obtener usuarios:", error);

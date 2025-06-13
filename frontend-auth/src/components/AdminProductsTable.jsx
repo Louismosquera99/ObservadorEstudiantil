@@ -59,7 +59,7 @@ const AdminProductsTable = ({
                 <td className="px-4 py-3">
                   {p.imagen ? (
                     <img
-                      src={`http://localhost:5000/uploads/${p.imagen}`}
+                      src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${p.imagen}`}
                       alt="producto"
                       className="h-12 w-12 object-cover rounded-md"
                     />

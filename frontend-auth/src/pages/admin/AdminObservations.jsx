@@ -20,7 +20,7 @@ const AdminObservations = () => {
   // 1) Traer todas las observaciones (populadas)
   const fetchObservations = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/observaciones");
+      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/observaciones`);
       setObservations(data);
     } catch {
       toast.error("Error al obtener observaciones");
@@ -47,7 +47,7 @@ const AdminObservations = () => {
     });
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:5000/api/observaciones/${id}`);
+        await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/observaciones/${id}`);
         setObservations((o) => o.filter((x) => x._id !== id));
         toast.success("Observación eliminada correctamente");
       } catch {
@@ -79,7 +79,7 @@ const AdminObservations = () => {
   const handleSaveChanges = async () => {
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/observaciones/${selectedObs._id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/observaciones/${selectedObs._id}`,
         selectedObs
       );
       // Reemplazamos la observación actualizada en el array
@@ -103,7 +103,7 @@ const AdminObservations = () => {
         descripcion: selectedObs.descripcion,
         creadoPor: currentUser._id,
       };
-      await axios.post("http://localhost:5000/api/observaciones", payload);
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/observaciones`, payload);
 
       // Volver a traer todo el listado (para que venga fully populated)
       await fetchObservations();

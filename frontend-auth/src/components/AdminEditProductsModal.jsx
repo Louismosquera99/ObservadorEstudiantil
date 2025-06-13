@@ -11,7 +11,7 @@ const AdminEditProductsModal = ({
 }) => {
   const [previewImage, setPreviewImage] = useState(
     product.imagen && typeof product.imagen === "string"
-      ? `http://localhost:5000/uploads/${product.imagen}`
+      ? `${import.meta.env.VITE_API_BASE_URL}/uploads/${product.imagen}`
       : null
   );
 

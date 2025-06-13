@@ -60,12 +60,6 @@ const AdminObservationTable = ({
                 </td>
                 <td className="px-4 py-3 text-center space-x-2">
                   <button
-                    onClick={() => onEdit(o)}
-                    className="px-4 py-1 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition"
-                  >
-                    Editar
-                  </button>
-                  <button
                     onClick={() => onDelete(o._id)}
                     className="px-4 py-1 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 transition"
                   >

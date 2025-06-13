@@ -50,13 +50,16 @@ export const createObservation = async (req, res) => {
   }
 };
 
-// El resto queda igual:
+// 2. Obtener todas las observaciones (ahora poblamos seguimientos y respuestas)
 export const getAllObservations = async (req, res) => {
   try {
     const observations = await Observation.find()
       .populate("estudiante", "nombre apellido correo")
       .populate("creadoPor", "nombre apellido rol")
+      .populate("seguimientos.quien", "nombre apellido")
+      // respuestasEstudiante no necesita ref, trae texto y fecha
       .sort({ createdAt: -1 });
+
     res.json(observations);
   } catch (error) {
     console.error("❌ Error al obtener observaciones:", error);
@@ -64,8 +67,8 @@ export const getAllObservations = async (req, res) => {
   }
 };
 
+// 3. Obtener por estudiante (igual, pero poblando seguimientos.quien también)
 export const getObservationsByStudent = async (req, res) => {
-  // Recibe ?estudianteId=<id> en la query
   const estudianteId = req.query.estudianteId;
   if (!estudianteId) {
     return res.status(400).json({ message: "Falta el estudianteId en la query." });
@@ -73,6 +76,7 @@ export const getObservationsByStudent = async (req, res) => {
   try {
     const observations = await Observation.find({ estudiante: estudianteId })
       .populate("creadoPor", "nombre apellido rol")
+      .populate("seguimientos.quien", "nombre apellido")
       .sort({ createdAt: -1 });
     res.json(observations);
   } catch (error) {

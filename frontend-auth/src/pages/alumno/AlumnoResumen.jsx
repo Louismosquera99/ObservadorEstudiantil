@@ -21,11 +21,19 @@ const AlumnoResumen = () => {
         toast.error("No se encontró usuario en el almacenamiento local");
         return;
       }
-      const { data } = await axios.get(
-        `http://localhost:5000/api/observaciones/estudiante?estudianteId=${currentUser._id}`
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/observaciones/estudiante?estudianteId=${currentUser._id}`
       );
-      setObservations(data);
-    } catch {
+      const data = res.data;
+      if (!Array.isArray(data)) {
+        console.error("Esperaba un array de observaciones, recibí:", data);
+        toast.error("Error: respuesta inesperada del servidor");
+        setObservations([]);
+      } else {
+        setObservations(data);
+      }
+    } catch (err) {
+      console.error(err);
       toast.error("Error al obtener tus observaciones");
     } finally {
       setLoading(false);
@@ -47,12 +55,17 @@ const AlumnoResumen = () => {
     );
   };
 
-  const filtered = observations.filter(
-    (o) =>
-      o.tipo.toLowerCase().includes(search.toLowerCase()) ||
-      o.descripcion.toLowerCase().includes(search.toLowerCase()) ||
-      o.estado.toLowerCase().includes(search.toLowerCase())
-  );
+  // Filtrado (seguro porque ahora observations es siempre array)
+  const filtered = observations.filter((o) => {
+    const term = search.toLowerCase();
+    return (
+      o.tipo.toLowerCase().includes(term) ||
+      o.descripcion.toLowerCase().includes(term) ||
+      o.estado.toLowerCase().includes(term)
+    );
+  });
+
+  // Paginación
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const paginated = filtered.slice(
     (currentPage - 1) * itemsPerPage,
@@ -69,23 +82,26 @@ const AlumnoResumen = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
+      {/* Encabezado */}
       <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6 mb-6">
-        <h1 className="text-2xl font-bold mb-4">Mis Observaciones</h1>
-
-        <AlumnoSeguimientoTable
-          observations={paginated}
-          onRespond={openRespondModal}
-          searchTerm={search}
-          setSearchTerm={(val) => {
-            setSearch(val);
-            setCurrentPage(1);
-          }}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        <h1 className="text-2xl font-bold text-gray-800">Mis Observaciones</h1>
       </div>
 
+      {/* Tabla */}
+      <AlumnoSeguimientoTable
+        observations={paginated}
+        onRespond={openRespondModal}
+        searchTerm={search}
+        setSearchTerm={(val) => {
+          setSearch(val);
+          setCurrentPage(1);
+        }}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+
+      {/* Modal */}
       {showModal && selectedObs && (
         <AlumnoSeguimientoModal
           observation={selectedObs}
